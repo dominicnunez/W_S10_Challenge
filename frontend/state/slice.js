@@ -1,41 +1,81 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { fetchOrderHistory, submitOrder } from "./thunk";
+
+const setValue = (state, action, key) => {
+  state[key] = action.payload;
+};
 
 const pizzaSlice = createSlice({
-    
-    name: "pizza",
-    initialState: {
-        name: "",
-        size: "",
-        toppings: [],
-        filter: "All",
-        message: "",
-        error: "",
+  name: "pizzas",
+  initialState: {
+    name: "",
+    size: "",
+    toppings: [],
+    pending: false,
+    history: [],
+    filter: "All",
+    message: "",
+    error: null,
+  },
+
+  reducers: {
+    setName: (state, action) => setValue(state, action, "name"),
+    setSize: (state, action) => setValue(state, action, "size"),
+
+    addTopping: (state, action) => {
+      state.toppings.push(action.payload);
+    },
+    removeTopping: (state, action) => {
+      state.toppings = state.toppings.filter(
+        (topping) => topping !== action.payload
+      );
     },
 
-    reducers: {
-        setName: (state, action) => {
-            state.name = action.payload
-        },
-        setSize: (state, action) => {
-            state.size = action.payload
-        },
-        addTopping: (state, action) => {
-            state.toppings.push(action.payload)
-        },
-        removeTopping: (state, action) => {
-            state.toppings = state.toppings.filter(topping => topping !== action.payload)
-        },
-        setFilter: (state, action) => {
-            state.filter = action.payload
-        },
-        setMessage: (state, action) => {
-            state.message = action.payload
-        },
-        setError: (state, action) => {
-            state.error = action.payload
-        },
-    }
-})
+    setFilter: (state, action) => setValue(state, action, "filter"),
+  },
 
-export const { setName, setSize, setToppings, setFilter } = pizzaSlice.actions;
+  extraReducers: (builder) => {
+    const handleAsyncStatus = (state, action, type) => {
+      switch (type) {
+        case "pending":
+          state.pending = true;
+          break;
+        case "fulfilled":
+          state.pending = false;
+          state.error = null;
+          break;
+        case "rejected":
+          state.pending = false;
+          state.error = action.error.message;
+          break;
+      }
+    };
+
+    builder
+      .addCase(fetchOrderHistory.pending, (state) =>
+        handleAsyncStatus(state, null, "pending")
+      )
+      .addCase(fetchOrderHistory.fulfilled, (state, action) => {
+        handleAsyncStatus(state, action, "fulfilled");
+        state.history = action.payload;
+      })
+      .addCase(fetchOrderHistory.rejected, (state, action) =>
+        handleAsyncStatus(state, action, "rejected")
+      )
+
+      .addCase(submitOrder.pending, (state) =>
+        handleAsyncStatus(state, null, "pending")
+      )
+      .addCase(submitOrder.fulfilled, (state, action) => {
+        handleAsyncStatus(state, action, "fulfilled");
+        state.message = action.payload;
+      })
+      .addCase(submitOrder.rejected, (state, action) =>
+        handleAsyncStatus(state, action, "rejected")
+      );
+  },
+});
+
+export const { setName, setSize, addTopping, removeTopping, setFilter } =
+  pizzaSlice.actions;
 export default pizzaSlice.reducer;
