@@ -12,10 +12,10 @@ const pizzaSlice = createSlice({
     size: "",
     toppings: [],
     pending: false,
-    history: [],
     filter: "All",
     message: "",
     error: null,
+    history: [],
   },
 
   reducers: {

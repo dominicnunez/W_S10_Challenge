@@ -4,13 +4,13 @@ const URL = "http://localhost:9009/api/pizza";
 
 const handleResponse = async (response) => {
   if (!response.ok) {
-    console.log(response)
+    // console.log(response)
     // debugger
     const errorData = await response.json();
     const errorMessage = errorData.message || "Failed to fetch pizzas";
     throw new Error(errorMessage);
   }
-  console.log(response)
+  // console.log(response)
 //   debugger
   return await response;
 };

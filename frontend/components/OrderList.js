@@ -11,7 +11,7 @@ export default function OrderList() {
 
   useEffect(() => {
     dispatch(fetchOrderHistory());
-  }, [dispatch]);
+  }, [dispatch, history]);
 
   const filteredOrders = filter == "All" ? orders : orders.filter(order => order.size == filter);
 
@@ -41,12 +41,13 @@ export default function OrderList() {
         Filter by size:
         {
           ['All', 'S', 'M', 'L'].map(size => {
-            const className = `button-filter${size === 'All' ? ' active' : ''}`
+            const className = `button-filter${size === filter ? ' active' : ''}`
             return <button
               data-testid={`filterBtn${size}`}
               className={className}
-              key={size}>{size}
-              onClick={() => handleFilterChange(size)}
+              key={size}
+              onClick={() => handleFilterChange(size)}>
+                {size}
               </button>
           })
         }
