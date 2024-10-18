@@ -8,8 +8,9 @@ import {
   nameState,
   sizeState,
   toppingsState,
+  historyState,
 } from "../state/selectors.js";
-import { setName, setSize, addTopping, removeTopping, clearToppings } from "../state/slice.js";
+import { setName, setSize, addTopping, removeTopping, clearToppings, pushToArray } from "../state/slice.js";
 
 export default function PizzaForm() {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ export default function PizzaForm() {
   const name = useSelector(nameState);
   const size = useSelector(sizeState);
   const toppings = useSelector(toppingsState);
+  // const history = useSelector(historyState);
 
   const fieldActions = {
     fullName: setName,
@@ -47,7 +49,8 @@ export default function PizzaForm() {
     dispatch(submitOrder(order))
       .then((result) => {
         if (result.type === 'pizzas/submitOrder/fulfilled'){
-          dispatch(fetchOrderHistory())
+          // dispatch(fetchOrderHistory())
+          dispatch(pushToArray({key: "history", value: order}))
           resetForm()
         }
       });
