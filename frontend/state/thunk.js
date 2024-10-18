@@ -4,11 +4,15 @@ const URL = "http://localhost:9009/api/pizza";
 
 const handleResponse = async (response) => {
   if (!response.ok) {
+    console.log(response)
+    // debugger
     const errorData = await response.json();
     const errorMessage = errorData.message || "Failed to fetch pizzas";
     throw new Error(errorMessage);
   }
-  return await response.json();
+  console.log(response)
+//   debugger
+  return await response;
 };
 
 export const fetchOrderHistory = createAsyncThunk(

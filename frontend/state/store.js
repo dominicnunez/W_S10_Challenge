@@ -9,7 +9,7 @@ export const resetStore = () => configureStore({
   reducer: {
     // example: exampleReducer,
     // add your reducer(s) here
-    pizza: pizzaReducer,
+    pizzas: pizzaReducer,
   },
   middleware: getDefault => getDefault().concat(
     // if using RTK Query for your networking: add your middleware here
