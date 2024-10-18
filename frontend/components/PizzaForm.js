@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormHandlers } from "../hooks/hooks.js";
-import { submitOrder } from "../state/thunk.js";
+import { fetchOrderHistory, submitOrder } from "../state/thunk.js";
 import {
   pendingState,
   errorState,
@@ -9,7 +9,7 @@ import {
   sizeState,
   toppingsState,
 } from "../state/selectors.js";
-import { setName, setSize, addTopping, removeTopping } from "../state/slice.js";
+import { setName, setSize, addTopping, removeTopping, clearToppings } from "../state/slice.js";
 
 export default function PizzaForm() {
   const dispatch = useDispatch();
@@ -33,9 +33,7 @@ export default function PizzaForm() {
   const resetForm = () => {
     dispatch(setName(""))
     dispatch(setSize(""))
-    Object.keys(toppings).forEach((key) => {
-      dispatch(removeTopping(key));
-    })
+    dispatch(clearToppings())
   }
 
   const handleSubmit = (e) => {
@@ -45,10 +43,11 @@ export default function PizzaForm() {
       size,
       toppings
     };
-    console.log(toppings)
+    
     dispatch(submitOrder(order))
       .then((result) => {
-        if (result.type == 'orders/submitOrder/fulfilled'){
+        if (result.type === 'pizzas/submitOrder/fulfilled'){
+          dispatch(fetchOrderHistory())
           resetForm()
         }
       });

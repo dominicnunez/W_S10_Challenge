@@ -11,7 +11,7 @@ export default function OrderList() {
 
   useEffect(() => {
     dispatch(fetchOrderHistory());
-  }, [dispatch, history]);
+  }, [dispatch]);
 
   const filteredOrders = filter == "All" ? orders : orders.filter(order => order.size == filter);
 

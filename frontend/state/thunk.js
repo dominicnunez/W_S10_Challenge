@@ -12,15 +12,14 @@ const handleResponse = async (response) => {
   }
   // console.log(response)
 //   debugger
-  return await response;
+  return await response.json();
 };
 
 export const fetchOrderHistory = createAsyncThunk(
   "pizzas/fetchOrderHistory",
   async () => {
     const response = await fetch(`${URL}/history`);
-    await handleResponse(response);
-    return await response.json();
+    return await handleResponse(response);
   }
 );
 
