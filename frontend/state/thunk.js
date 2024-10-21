@@ -11,7 +11,7 @@ const handleResponse = async (response) => {
     throw new Error(errorMessage);
   }
   // console.log(response)
-//   debugger
+  // debugger
   return await response.json();
 };
 

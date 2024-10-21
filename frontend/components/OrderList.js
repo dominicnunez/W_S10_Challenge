@@ -25,8 +25,11 @@ export default function OrderList() {
       <ol>
         {
           filteredOrders.map((order, index) => {
-            const toppingCount = order.toppings.length
+            // console.log({"current order map": order})
+            const toppings = order.toppings || []; // Use an empty array if toppings is undefined
+            const toppingCount = toppings?.length || 0;
             const toppingText = toppingCount ==  1 ? "1 topping" : `${toppingCount} toppings`
+            
             return (
               <li key={index}>
                 <div>

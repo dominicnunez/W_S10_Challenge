@@ -34,11 +34,6 @@ const pizzaSlice = createSlice({
       state.toppings = []
     },
 
-    pushToArray: (state, action) => {
-      const {key, value} = action.payload;
-      state[key].push(value);
-    },
-
     setFilter: (state, action) => setValue(state, action, "filter"),
   },
 
@@ -84,6 +79,6 @@ const pizzaSlice = createSlice({
   },
 });
 
-export const { setName, setSize, addTopping, removeTopping, clearToppings, setFilter, pushToArray } =
+export const { setName, setSize, addTopping, removeTopping, clearToppings, setFilter } =
   pizzaSlice.actions;
 export default pizzaSlice.reducer;
